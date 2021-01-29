@@ -285,10 +285,23 @@ public class ArrayTest {
                     .sorted(Comparator.comparingInt(TreeNode::getSort)).sorted(Comparator.comparingInt(TreeNode::getId)).collect(Collectors.toList());
             treeNode.setChildren(childs);
         }
-
-        for (TreeNode treeNode : pList) {
+        List<TreeNode> nodeList = packageMenuTree(pList, treeNodeList);
+        for (TreeNode treeNode : nodeList) {
             printTreeB(treeNode, 0);
         }
+    }
+
+    private List<TreeNode> packageMenuTree(List<TreeNode> firstMenu, List<TreeNode> treeNodeList) {
+        List<TreeNode> menuResults = new ArrayList<>();
+        if (null != firstMenu) {
+            for (TreeNode treeNode : firstMenu) {
+                menuResults.add(treeNode);
+                List<TreeNode> childs = treeNodeList.stream().filter(t -> t.getPid() == treeNode.getId())
+                        .sorted(Comparator.comparingInt(TreeNode::getSort)).sorted(Comparator.comparingInt(TreeNode::getId)).collect(Collectors.toList());
+                treeNode.setChildren(packageMenuTree(childs, treeNodeList));
+            }
+        }
+        return menuResults;
     }
 
     private void printTreeB(TreeNode node, int size) {
