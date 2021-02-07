@@ -50,8 +50,36 @@ public class BinaryTreeTest {
         return leftLen > rightLen ? 1 + leftLen : 1 + rightLen;
     }
 
-
-
+    // 226 翻转二叉树
+    public TreeNode invertTree(TreeNode root) {
+        // 广度遍历解法
+        if (root == null) return root;
+        LinkedList<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            TreeNode pop = queue.pop();
+            TreeNode tmp = pop.right;
+            pop.right = pop.left;
+            pop.left = tmp;
+            if (null != pop.left) {
+                queue.add(pop.left);
+            }
+            if (null != pop.right) {
+                queue.add(pop.right);
+            }
+        }
+        return root;
+    }
+    public TreeNode invertTree2(TreeNode root) {
+        // 广度遍历解法
+        if (root == null) return root;
+        TreeNode tmp = root.right;
+        root.right = root.left;
+        root.left = tmp;
+        invertTree2(root.left);
+        invertTree2(root.right);
+        return root;
+    }
 
 
     @Test
